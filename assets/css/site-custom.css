@@ -1,0 +1,221 @@
+.container {
+	max-width: 1000px;
+}
+
+.container.content {
+	padding-top: 4em;
+	padding-bottom: 4em;
+}
+
+.content-text {
+	padding: 2em 0;
+}
+
+.center-block {
+	max-width: 400px;
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+footer {
+	border-top: 1px solid #efefef;
+	padding: 2em 0;
+}
+
+.form-group label {
+	display: block;
+}
+
+.has-error .form-control {
+	background-color: #fcf8e3;
+}
+
+.error {
+	display: inline-block;
+	color: red;
+	float: right;
+	font-weight: normal;
+}
+
+
+/*
+ * Nav
+ */
+.navbar-default {
+	background-color: #fff;
+	border-radius: 0;
+	margin: 0;
+}
+
+
+/*
+ * Browse cars
+ */
+.browse-cars {
+	background-color: #858A96;
+	box-shadow: inset 0 2px 2px #727D86;
+	color: #fff;
+	padding: 3em 0;
+}
+
+.browse-cars a {
+	color: #fff;
+}
+
+.browse-cars > .container {
+	max-width: 700px;
+}
+
+.browse-cars h1 {
+	margin: 20px 0;
+}
+
+.browse-cars input,
+.browse-cars select {
+	border: 0;
+}
+
+.browse-cars .btn-primary {
+	background-color: #474F56;
+	border: 0;
+	padding: 8px 30px;
+}
+
+
+/*
+ * Section
+ */
+section {
+	margin: 0 0 2em;
+}
+
+.section-header {
+	border-bottom: 2px solid #ebebeb;
+}
+
+.section-header h2 {
+	margin: 0;
+	padding: 1em 0;
+}
+
+.section-header h4 {
+	margin: 0;
+	padding: 0 0 1em;
+}
+
+
+/*
+ * Results
+ */
+.row.result {
+	padding: 1.5em 0;
+}
+
+.row.result .thumbnail {
+	margin: 0;
+}
+
+.car-slideshow {
+	position: relative;
+	margin: 10px 0 10px;
+}
+
+.car-slideshow .prev,
+.car-slideshow .next {
+	display: inline-block;
+	position: absolute;
+	height: 100%;
+	width: 40px;
+	z-index: 100;
+	text-indent: -9999px;
+}
+
+.car-slideshow .next {
+	background: url('../images/arrow-right.png') 50% 50% no-repeat;
+	top: 0;
+	right: 0;
+	transition: all .4s;
+}
+
+.car-slideshow .prev {
+	background: url('../images/arrow-left.png') 50% 50% no-repeat;
+	top: 0;
+	transition: all .2s;
+}
+
+.car-slideshow:hover .next {
+	background: rgba(0,0,0,.5) url('../images/arrow-right.png') 50% 50% no-repeat;
+}
+
+.car-slideshow:hover .prev {
+	background: rgba(0,0,0,.5) url('../images/arrow-left.png') 50% 50% no-repeat;
+}
+
+.car-slideshow img {
+	max-width: 100%;
+}
+
+.car-information {
+	margin: 1em 0;
+}
+
+
+/*
+ * Form
+ */
+.form-access {
+	text-align: center;
+	margin: 4em 0;
+}
+
+.form-access h5 {
+	color: #888;
+}
+
+.form-access h4 {
+	font-size: 1.5em;
+}
+
+.place-order {
+	margin: .8em 0 0;
+}
+
+#purchase-form  h4{
+	color: #999;
+	border-bottom: 1px solid #ccc;
+	font-size: 1em;
+	margin: 2em 0 1em;
+	padding: 0 0 .5em;
+}
+
+#purchase-form .button-wrap {
+	margin: 3em 0 0;
+}
+
+#purchase-form .card  {
+	display: inline-block;
+	margin: 0 1em 0 0;
+	text-align: center;
+}
+
+#purchase-form .card span  {
+	display: block;
+	height: 40px;
+	width: 48px;
+	text-indent: -9999px;
+	margin: -5px 0 0;
+	padding: 0;
+}
+
+#purchase-form .card.amex span {
+	background: url('../images/card-amex.png') 0 0 no-repeat;
+}
+
+#purchase-form .card.mastercard span  {
+	background: url('../images/card-mastercard.png') 0 0 no-repeat;
+}
+
+#purchase-form .card.visa span  {
+	background: url('../images/card-visa.png') 0 0 no-repeat;
+}
