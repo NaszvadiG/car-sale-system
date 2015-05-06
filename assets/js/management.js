@@ -79,7 +79,9 @@ $(document).ready(function() {
 					required: true,
 					email: true
 				},
-				role_id: 'required'
+				role_id: 'required',
+				password: 'required',
+				confirm_password: 'required'
 			},
 			messages: {
 			},

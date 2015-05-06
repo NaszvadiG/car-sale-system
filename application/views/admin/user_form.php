@@ -31,6 +31,10 @@
 				</div>
 			</div>
 			
+
+			<?php if ($is_user == false) { ?>
+
+
 			<div class="form-group">
 				<label for="" class="col-sm-4 control-label">Password</label>
 				
@@ -46,8 +50,29 @@
 					<input class="form-control" name="confirm_password" type="password" placeholder="Confirm password">
 				</div>
 			</div>
+
+
+			<?php } else { ?>
+
+
+			<h4>New Password</h4>
+
+			<div class="form-group">
+				<label for="" class="col-sm-4 control-label">New password</label>
+				
+				<div class="col-sm-8">
+					<input class="form-control" name="new_password" type="password" placeholder="Password">
+				</div>
+			</div>
 			
-			<?php if ($is_user == true) { ?>
+			<div class="form-group">
+				<label for="" class="col-sm-4 control-label">Confirm password</label>
+				
+				<div class="col-sm-8">
+					<input class="form-control" name="confirm_new_password" type="password" placeholder="Confirm password">
+				</div>
+			</div>
+
 			
 			<h4>Profile</h4>
 			

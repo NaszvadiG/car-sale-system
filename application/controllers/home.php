@@ -35,33 +35,38 @@ class Home extends CI_Controller
 	 */	
 	public function login()
 	{
-		// Data
-		$data['title'] = 'Log In | ABC Car Fleet';
-		
-		// logged user data
-		$data['logged'] = $this->user_model->logged();
-		
-		if($_POST) {
-			$email = $this->input->post('email');
-			$pass  = $this->input->post('password');
-			$pass2 = $this->input->post('cofirm_password');
+		if ($this->user_model->logged() == false) 
+		{
+			// Data
+			$data['title'] = 'Log In | ABC Car Fleet';
 			
-			// Check user credentials against database,
-			// check if form pass matches db pass
-			$credentials = $this->user_model->users(array('email' => $email));
+			// logged user data
+			$data['logged'] = $this->user_model->logged();
 			
-			// Store id in session
-			if (password_verify($pass, $credentials->password)) {
-				$this->session->set_userdata('user_id', $credentials->user_id);
+			if($_POST) {
+				$email = $this->input->post('email');
+				$pass  = $this->input->post('password');
+				$pass2 = $this->input->post('cofirm_password');
+				
+				// Check user credentials against database,
+				// check if form pass matches db pass
+				$credentials = $this->user_model->users(array('email' => $email));
+				
+				// Store id in session
+				if (password_verify($pass, $credentials->password)) {
+					$this->session->set_userdata('user_id', $credentials->user_id);
+				}
+				
+				// Redirect to main page
+				redirect(base_url('/'),'location');
 			}
 			
-			// Redirect to main page
-			redirect(base_url('/'),'location');
+			$this->load->view('header', $data);
+			$this->load->view('login');
+			$this->load->view('footer');
+		} else {
+			redirect(base_url('/'),'location');	
 		}
-		
-		$this->load->view('header', $data);
-		$this->load->view('login');
-		$this->load->view('footer');
 	}
 	
 	
@@ -81,48 +86,101 @@ class Home extends CI_Controller
 	 */	
 	public function register()
 	{
-		// Data
-		$data['title'] = 'Register | ABC Car Fleet';
-		
-		// logged user data
-		$data['logged'] = $this->user_model->logged();
-		
-		if($_POST) {
-			$email = $this->input->post('email');
-			$pass  = $this->input->post('password');
-			$pass2 = $this->input->post('cofirm_password');
+		if ($this->user_model->logged() == false) 
+		{
+			$this->load->library('form_validation');
+
+
+			// logged user data
+			$data['logged'] = $this->user_model->logged();
+
+
+			// Passed Data
+			$data['title'] = 'Register | ABC Car Fleet';
+			$data['message'] =  null;
+
+
+			// post data
+			$email      = trim(htmlspecialchars($this->input->post('email')));
+			$password   = password_hash($this->input->post('password'), PASSWORD_BCRYPT);
+			$role_id    = 3; 
+			$created_at = date('Y-m-d H:i:s');
+
+
+			$form_data = array(
+				'email'        => $email,
+				'password'     => $password,
+				'role_id'      => $role_id,
+				'created_at'   => $created_at
+				);
 			
-			// Check user credentials against database
-			$credentials = $this->user_model->users(array('email', $email));
+
+			// Form validation
+			$rules = array(
+				array(
+					'field' => 'email',
+					'label' => 'Email',
+					'rules' => 'required|min_length[10]|is_unique[users.email]'),
+				array(
+					'field' => 'password',
+					'label' => 'password',
+					'rules' => 'required|min_length[6]'),
+				array(
+					'field' => 'confirm_password',
+					'label' => 'confirm_password',
+					'rules' => 'required'),
+				);
+
+			$this->form_validation->set_rules($rules);
+
+			// Check if all went well, if so, then add new user
+			if ($this->form_validation->run() == false) {
+				echo '';
+			}
+			 else {
+				$this->user_model->insert($form_data);
+
+				$user_id = $this->db->insert_id();
+
+				$this->session->set_userdata('user_id', $user_id);
+
+				redirect(base_url('/'), 'location');
+			}
+
 			
-			var_dump($credentials);
-			
-			// Store id in session
-			
-			
-			// Redirect to main page
+			// Views
+			$this->load->view('header', $data);
+			$this->load->view('register', $data);
+			$this->load->view('footer');
+		} 
+		else {
+			redirect(base_url('/'),'location');
 		}
-		
-		$this->load->view('header', $data);
-		$this->load->view('register');
-		$this->load->view('footer');
 	}
 	
 	
 	/*
 	 * Enquire
 	 */	
-	public function enquire() {
+	public function enquire() 
+	{
 		$table = 'enquiries';
-		
-		if ($this->user_model->logged() == true) {
-			$car_id   = trim(htmlspecialchars($this->input->post('car_id')));
-			$fullname = trim(htmlspecialchars($this->input->post('fullname')));
-			$email    = trim(htmlspecialchars($this->input->post('email')));
-			$phone    = trim(htmlspecialchars($this->input->post('phone')));
-			$subject  = trim(htmlspecialchars($this->input->post('subject')));
-			$message  = trim(htmlspecialchars($this->input->post('message')));
-			
+
+		// Passed data
+		$data['title'] = 'Enquiry | ABC Car Fleet';
+
+		// logged user data
+		$data['logged'] = $this->user_model->logged();
+
+		$car_id   = trim(htmlspecialchars($this->input->post('car_id')));
+		$fullname = trim(htmlspecialchars($this->input->post('fullname')));
+		$email    = trim(htmlspecialchars($this->input->post('email')));
+		$phone    = trim(htmlspecialchars($this->input->post('phone')));
+		$subject  = trim(htmlspecialchars($this->input->post('subject')));
+		$message  = trim(htmlspecialchars($this->input->post('message')));
+	
+		if ($this->user_model->logged() == true && $car_id > 0) 
+		{
 			$form_data = array(
 				'car_id'   => $car_id,
 				'fullname' => $fullname,
@@ -135,7 +193,12 @@ class Home extends CI_Controller
 			
 			$this->db->insert($table, $form_data);
 			
-			redirect('browse/car/'.$car_id.'?message=equiry-sent', 'location');
+			$data['page_title']   = 'Success!';
+			$data['page_message'] = 'Thanks, you\'re enquiry has been successfully processed.';
+
+			$this->load->view('header', $data);
+			$this->load->view('success', $data);
+			$this->load->view('footer');
 		}
 		else {
 			redirect('login?message=login', 'location');
@@ -204,7 +267,7 @@ class Home extends CI_Controller
 			
 			
 				$data['page_title']   = 'Success!';
-				$data['page_message'] = 'Thanks, you\'re purchase has been successfully process.';
+				$data['page_message'] = 'Thanks, you\'re purchase has been successfully processed.';
 
 				$this->load->view('header', $data);
 				$this->load->view('success', $data);

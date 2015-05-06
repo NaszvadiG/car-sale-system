@@ -12,19 +12,22 @@
 			
 			<!-- form -->
 			<div class="center-block">
+				<?php echo validation_errors(); ?>
+
+
 				<form id="register-form" method="post" role="form">
 					<div class="form-group">
 						<label for="email">Email address</label>
-						<input type="email" name="email" class="form-control" id="email" placeholder="Enter email">
+						<input type="email" name="email" class="form-control" id="email" value="<?php echo set_value('email'); ?>" placeholder="Enter email">
 					</div>
 					
 					<div class="form-group">
-						<label for="exampleInputPassword1">Password</label>
+						<label for="password">Password</label>
 						<input type="password" name="password" class="form-control" id="password" placeholder="Password">
 					</div>
 					
 					<div class="form-group">
-						<label for="exampleInputPassword1">Confirm Password</label>
+						<label for="confirm_password">Confirm Password</label>
 						<input type="password" name="confirm_password" class="form-control" id="confirm_password" placeholder="Confirm Password">
 					</div>
 					

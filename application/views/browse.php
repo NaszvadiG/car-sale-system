@@ -9,91 +9,67 @@
 		
 			<!-- filter -->
 			<div class="col-sm-3">
+				<div class="text-right">
+					<a href="<?php echo base_url('browse'); ?>" title="clear fields">clear</a>
+				</div>
+
 				<form action="<?php echo base_url('browse'); ?>" method="post" role="form">
 					<div class="form-group">
-						<select class="form-control" name="car_make" id="car_make">
-							<option value="0" disabled selected style="display: none;">Select Make</option>
-							<option value="">All makes</option>
-						<?php 
-						foreach ($car_makes as $make) {
-							echo '<option value="'.$make->car_make_id.'">'.$make->make_name.'</option>';
-						}
-						?>
-						</select>
+						<?php echo $select_make; ?>
 					</div>
 					
 					<div class="form-group">
-						<select class="form-control" name="car_model" id="car_model">
-							<option value="">All models</option>
+						<input type="hidden" name="selected_model" value="<?php echo $car_model_id; ?>">
+						<select class="form-control" name="car_model_id" id="car_model">
+							<option value="0">All models</option>
 							<option value="0" disabled selected style="display: none;">Select Model</option>
 						</select>
 					</div>
 					
 					<div class="form-group">
-						<input class="form-control" name="min_year" type="text" value="<?php echo $field_min_year; ?>" placeholder="Min Year">
+						<input class="form-control" name="min_year" type="text" value="<?php echo $min_year; ?>" placeholder="Min Year">
 					</div>
 					
 					<div class="form-group">
-						<input class="form-control" name="max_year" type="text" value="<?php echo $field_max_year; ?>" placeholder="Max Year">
+						<input class="form-control" name="max_year" type="text" value="<?php echo $max_year; ?>" placeholder="Max Year">
 					</div>
 					
 					<div class="form-group">
-						<select class="form-control" name="transmission">
-							<option value="" disabled selected style="display: none;">Transmission</option>
-							<option value="">All transmissions</option>
-							<option value="automatic">Automatic</option>
-							<option value="manual">Manual</option>
-						</select>
+						<?php echo $select_transmission; ?>
 					</div>
 					
 					<div class="form-group">
-						<select class="form-control" name="car_body">
-							<option value="" disabled selected style="display: none;">Body type</option>
-							<option value="">All Body types</option>
-							<?php 
-							foreach ($car_bodies as $body) {
-								echo '<option value="'.$body->car_body_id.'">'.$body->body_name.'</option>';
-							}
-							?>
-						</select>
+						<?php echo $select_bodies; ?>
 					</div>
 					
 					<div class="form-group">
-						<select class="form-control" name="cylinders">
-							<option value="" disabled selected style="display: none;">Cylinders</option>
-							<option value="">All Cylinders</option>
-							<?php 
-							foreach ($car_cylinders as $cyl) {
-								echo '<option value="'.$cyl->car_cyl_id.'">'.$cyl->cylinders.'</option>';
-							}
-							?>
-						</select>
+						<?php echo $select_cylinders; ?>
 					</div>
 					
 					<div class="form-group">
 						<div class="input-group">
 							<div class="input-group-addon">$</div>
-							<input class="form-control" name="min_price" type="text" placeholder="Min Price">
+							<input class="form-control" name="min_price" type="text" value="<?php echo $min_price; ?>" placeholder="Min Price">
 						</div>
 					</div>
 					
 					<div class="form-group">
 						<div class="input-group">
 							<div class="input-group-addon">$</div>
-							<input class="form-control" name="max_price" type="text" placeholder="Max Price">
+							<input class="form-control" name="max_price" type="text" value="<?php echo $max_price; ?>" placeholder="Max Price">
 						</div>
 					</div>
 					
 					<div class="form-group">
-						<input class="form-control" name="min_mileage" type="text" placeholder="Min Mileage">
+						<input class="form-control" name="min_mileage" type="text" value="<?php echo $min_mileage; ?>" placeholder="Min Mileage">
 					</div>
 					
 					<div class="form-group">
-						<input class="form-control" name="max_mileage" type="text" placeholder="Max Mileage">
+						<input class="form-control" name="max_mileage" type="text" value="<?php echo $max_mileage; ?>" placeholder="Max Mileage">
 					</div>
 					
 					<div class="form-group">
-						<input class="form-control" name="colour" type="text" placeholder="Colour">
+						<input class="form-control" name="colour" type="text" value="<?php echo $colour; ?>" placeholder="Colour">
 					</div>
 					
 					<div class="form-group">
@@ -162,17 +138,5 @@
 			</div>
 			<!-- results -->
 		
-		</div>
-		
-		<div class="row">
-			<div class="col-sm-offset-3 col-sm-9 text-center">
-			
-			<ul class="pagination">
-			  <li><a href="#">&laquo;</a></li>
-			  <li><a href="#">1</a></li>
-			  <li><a href="#">&raquo;</a></li>
-			</ul>
-			
-			</div>
 		</div>
 	</div>

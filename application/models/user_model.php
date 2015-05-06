@@ -8,11 +8,17 @@ class User_model extends CI_Model
 		);
 
 
-	public function __construct() {
+	public function __construct() 
+	{
 		$this->load->database();
 	}
 	
-	public function users($where = array()) {
+
+	/*
+	 * results
+	 */
+	public function users($where = array()) 
+	{
 		$this->db->join('user_profile', 'user_profile.user_id = users.user_id');
 		$this->db->join('user_roles', 'user_roles.role_id = users.role_id');
 		
@@ -30,7 +36,12 @@ class User_model extends CI_Model
 		}		
 	}
 
-	public function count($where = array()) {
+
+	/*
+	 * count results
+	 */
+	public function count($where = array()) 
+	{
 		// Where if array count more than 0
 		if (count($where) > 0) {
 			$this->db->where($where); 
@@ -42,7 +53,12 @@ class User_model extends CI_Model
 		return $query->num_rows();
 	}
 	
-	public function insert($form_data = array()) {
+
+	/*
+	 * insert
+	 */
+	public function insert($form_data = array())
+	{
 		// create user
 		$this->db->insert('users', $form_data);
 		$new_id = $this->db->insert_id();
@@ -52,14 +68,28 @@ class User_model extends CI_Model
 	}
 	
 
-	public function update_profile($where = array(), $form_data = array()) {
+	/*
+	 * update
+	 */
+	public function update_profile($where = array(), $form_data = array()) 
+	{
 		$this->db->where($where);
 		$this->db->update('user_profile', $form_data);
 	}
 	
+	public function update_user($where = array(), $form_data = array()) 
+	{
+		$this->db->where($where);
+		$this->db->update('users', $form_data);
+	}
 
-	public function delete($user_id = 0) {
-		
+
+	/*
+	 * delete
+	 */
+	public function delete($where = array()) 
+	{
+		$this->db->delete('users');
 	}
 	
 
@@ -90,7 +120,8 @@ class User_model extends CI_Model
 	/*
 	 * logged user details
 	 */
-	public function logged() {
+	public function logged() 
+	{
 		$session_data = $this->session->userdata('user_id');
 		
 		$where = array('users.user_id' => $session_data);

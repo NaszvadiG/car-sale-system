@@ -431,13 +431,11 @@ class admin extends CI_Controller
 		// Logged user
 		$data['logged'] = $this->user_model->logged();
 
-
 		// Data
 		$data['title'] = 'Add User';
 		$data['roles'] = $this->user_model->user_roles();
 		$data['is_user'] = ($user_id > 0) ? true : false;
 		$data['user'] = array();
-
 		$data['form_message'] = null;
 
 
@@ -448,22 +446,17 @@ class admin extends CI_Controller
 		// If post, process data
 		if (isset($_POST) && $_POST) 
 		{
-			// Form data
-			$password = trim(htmlspecialchars($this->input->post('password')));
-			$date = date('Y-m-d H:i:s');
-
-			$form_data = array(
-				'email'        => trim(htmlspecialchars($this->input->post('email'))),
-				'password'     => password_hash($password, PASSWORD_BCRYPT),
-				'role_id'      => trim(htmlspecialchars($this->input->post('role_id'))),
-				'created_at'   => $date
-			);
 			
 			// insert or update
 			if ($user_id > 0) 
 			{
 				$data['form_message'] = 'Information successfully updated.';
 
+				// Role
+				$field_role_id = trim(htmlspecialchars($this->input->post('role_id')));
+				$user_data = array('role_id' => $field_role_id);
+
+				// Profile
 				$profile_data = array(
 					'first_name' => trim(htmlspecialchars($this->input->post('first_name'))),
 					'last_name'  => trim(htmlspecialchars($this->input->post('last_name'))),
@@ -477,6 +470,17 @@ class admin extends CI_Controller
 					'postcode'   => trim(htmlspecialchars($this->input->post('postcode'))),
 				);
 
+				// New password
+				$field_password = trim(htmlspecialchars($this->input->post('new_password')));
+				$field_confirm_password = trim(htmlspecialchars($this->input->post('confirm_new_password')));
+
+				if (!empty($field_password) && !empty($field_confirm_password)) {
+					$user_data['password'] = password_hash($field_password, PASSWORD_BCRYPT);
+
+					$data['form_message'] = 'Information &amp; password successfully updated.';
+				}
+
+				$this->user_model->update_user(array('user_id' => $user_id), $user_data);
 				$this->user_model->update_profile(array('user_id' => $user_id), $profile_data);
 
 				// History insert
@@ -488,6 +492,18 @@ class admin extends CI_Controller
 				$this->history_model->insert($history_data);
 			} 
 			else {
+				// Form data
+				$password = trim(htmlspecialchars($this->input->post('password')));
+
+				$form_data = array(
+					'email'        => trim(htmlspecialchars($this->input->post('email'))),
+					'password'     => password_hash($password, PASSWORD_BCRYPT),
+					'role_id'      => trim(htmlspecialchars($this->input->post('role_id'))),
+					'created_at'   => $created_at
+				);
+
+
+				// message
 				$data['form_message'] = 'Information successfully added.';
 
 				$this->user_model->insert($form_data);

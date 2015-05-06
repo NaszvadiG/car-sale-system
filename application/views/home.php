@@ -6,7 +6,7 @@
 			
 				<div class="form-group">
 					<div class="col-sm-6">
-						<select class="form-control" name="car_make" id="car_make">
+						<select class="form-control" name="car_make_id" id="car_make">
 							<option value="0" disabled selected style="display: none;">Select Make</option>
 						<?php 
 						foreach ($car_makes as $make) {
@@ -17,7 +17,7 @@
 					</div>
 					
 					<div class="col-sm-6">
-						<select class="form-control" name="car_model" id="car_model">
+						<select class="form-control" name="car_model_id" id="car_model">
 							<option value="0" disabled selected style="display: none;">Select Model</option>
 						</select>
 					</div>

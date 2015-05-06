@@ -2,32 +2,18 @@ $(document).ready(function() {
 	/*
 	 * car model + make selection
 	 */
-	$('select[name="car_make"]').on('change', function() {
+	// For on load
+	var select_make = $('#car_make');
+	
+	if(select_make.val() > 0) {
+		get_model(site_url, select_make.val());
+	}
+	
+	// For field change
+	select_make.on('change', function() {
 		var car_make = $(this).val();
 		
-		$.ajax({
-			type: "GET",
-			url: site_url + 'admin/get_models/' + car_make,
-			dataType: "json",
-			error: function(response) {
-				console.log('Could not retreive data from url: ' + site_url);
-			},
-			success: function(result) {
-				var select_model = $('select[name="car_model"]'),
-					row = result;
-					
-				select_model.empty();
-				
-				select_model.append('<option value="">All models</option>');
-				
-				for (i in row) {
-					var model_id   = row[i].car_model_id,
-						model_name = row[i].model_name;
-					
-					select_model.append('<option value="' + model_id + '">' + model_name + '</option>');
-				}
-			}
-		});
+		get_model(site_url, car_make);
 	});
 	
 	
@@ -163,3 +149,38 @@ $(document).ready(function() {
 	});
 });
 
+
+/*
+ * function get_model
+ */
+function get_model(site_url, car_make) {
+	var selected_model = $('input[name="selected_model"').val();
+
+	$.ajax({
+		type: "GET",
+		url: site_url + 'admin/get_models/' + car_make,
+		dataType: "json",
+		error: function(response) {
+			console.log('Could not retreive data from url: ' + site_url);
+		},
+		success: function(result) {
+			var select_model = $('#car_model'),
+				row = result;
+				
+			select_model.empty();
+
+			select_model.append('<option value="0" selected="selected">All Models</option>');
+			
+			for (i in row) {
+				var model_id   = row[i].car_model_id,
+					model_name = row[i].model_name;
+				
+				if (selected_model == model_id) {
+					select_model.append('<option value="' + model_id + '" selected="selected">' + model_name + '</option>');
+				} else {
+					select_model.append('<option value="' + model_id + '">' + model_name + '</option>');
+				}
+			}
+		}
+	});	
+}

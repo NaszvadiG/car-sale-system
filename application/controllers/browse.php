@@ -15,88 +15,125 @@ class Browse extends CI_Controller
 	 */	
 	public function index()
 	{
-		// Site title data
+		// Passed data
 		$data['title'] = 'Browse | ABC Car Fleet';
-		
 		
 		// Blanks so that there wont be any errors 
 		// if there isn't a value
-		$where = array();
-		
-		$data['field_car_make'] = null;
-		$data['field_car_model'] = null;
-		$data['field_min_year'] = null;
-		$data['field_max_year'] = null;
-		$data['field_transmission'] = null;
-		$data['field_car_body'] = null;
-		$data['field_cylinders'] = null;
-		$data['field_min_price'] = null;
-		$data['field_max_price'] = null;
-		$data['field_min_mileage'] = null;
-		$data['field_max_mileage'] = null;
-		$data['field_colour'] = null;
-		
-		
-		// Filter cars
-		if (isset($_POST) && $_POST) {
-			if (!empty($this->input->post('car_make'))) {
-				$where['cars.car_make_id'] = $this->input->post('car_make');
-				$data['field_car_make'] = $this->input->post('car_make');
+		$get      = array();
+		$where    = array();
+		$min_year = null;
+		$get_uri  = null;
+
+		$specs = array(
+			'car_make_id'  => 'car_make_id',
+			'car_model_id' => 'car_model_id',
+			'car_body_id'  => 'car_body_id',
+			'car_cyl_id'   => 'car_cyl_id',
+			'transmission' => 'transmission',
+			'min_mileage'  => 'mileage >=',
+			'max_mileage'  => 'mileage <=',
+			'min_price'    => 'price >=',
+			'max_price'    => 'price <=',
+			'min_year'     => 'year >=',
+			'max_year'     => 'year <=',
+			'colour'       => 'colour'
+			);
+
+		// blank pass data
+		foreach ($specs as $key => $val) {
+			$data[$key] = null;
+		}
+
+
+		// Get
+		foreach ($specs as $key => $val) 
+		{
+			if (!empty($this->input->get($key))) 
+			{
+				$where['cars.'.$val] = $this->input->get($key);
+
+				$data[$key] = $this->input->get($key);
 			}
-			
-			if (!empty($this->input->post('car_model'))) {
-				$where['cars.car_model_id'] = $this->input->post('car_model');
-				$data['field_car_model'] = $this->input->post('car_model');
+		}
+
+
+		// Post	
+		if (isset($_POST) && $_POST) 
+		{
+			foreach ($specs as $key => $val) 
+			{
+				if (!empty($this->input->post($key))) {
+					$get[$key] = $this->input->post($key);
+				}
 			}
-			
-			if (!empty($this->input->post('min_year'))) {
-				$where['cars.year >='] = $this->input->post('min_year');
-				$data['field_min_year'] = $this->input->post('min_year');
+
+
+			$count = 1;
+
+			foreach ($get as $key => $val) {
+				if ($count == 1) {
+					$get_uri .= '?'.$key.'='.$val;
+				} else {
+					$get_uri .= '&'.$key.'='.$val;
+				}
+
+				$count++;
 			}
-			
-			if (!empty($this->input->post('max_year'))) {
-				$where['cars.year <='] = $this->input->post('max_year');
-				$data['field_max_year'] = $this->input->post('max_year');
-			}
-			
-			if (!empty($this->input->post('transmission'))) {
-				$where['cars.transmission'] = $this->input->post('transmission');
-			}
-			
-			if (!empty($this->input->post('car_body'))) {
-				$where['cars.car_body_id'] = $this->input->post('car_body');
-			}
-			
-			if (!empty($this->input->post('cylinders'))) {
-				$where['cars.car_cyl_id'] = $this->input->post('cylinders');
-			}
-			if (!empty($this->input->post('min_price'))) {
-				$where['cars.price >='] = $this->input->post('min_price');
-			}
-			
-			if (!empty($this->input->post('max_price'))) {
-				$where['cars.price <='] = $this->input->post('max_price');
-			}
-			
-			if (!empty($this->input->post('min_mileage'))) {
-				$where['cars.mileage >='] = $this->input->post('min_mileage');
-			}
-			
-			if (!empty($this->input->post('max_mileage'))) {
-				$where['cars.mileage <='] = $this->input->post('max_mileage');
-			}
-			
-			if (!empty($this->input->post('colour'))) {
-				$where['cars.colour'] = $this->input->post('colour');
-			}
+
+			redirect(base_url('browse').$get_uri, 'location');
 		}
 		
 		
 		// Model Data
-		$data['car_makes'] = $this->car_model->car_makes();
-		$data['car_bodies'] = $this->car_model->car_bodies();
+		$data['car_makes']     = $this->car_model->car_makes();
+		$data['car_bodies']    = $this->car_model->car_bodies();
 		$data['car_cylinders'] = $this->car_model->car_cylinders();
-		$data['cars'] = $this->car_model->cars($where);
+		$data['cars']          = $this->car_model->cars($where);
+
+
+		// car make dropdown
+		$make_options['" disabled selected style="display: none;'] = 'Select make';
+		$make_options['0'] = 'All makes';
+
+		foreach($data['car_makes'] as $make) {
+			$make_options[$make->car_make_id] = $make->make_name;
+		}
+
+		$data['select_make'] = form_dropdown('car_make_id', $make_options, $data['car_make_id'], 'class="form-control" id="car_make"');
+
+
+		// cyl dropdown
+		$cylinder_options['" disabled selected style="display: none;'] = 'Cylinders';
+		$cylinder_options['0'] = 'All cylinders';
+
+		foreach($data['car_cylinders'] as $cyl) {
+			$cylinder_options[$cyl->car_cyl_id] = $cyl->cylinders;
+		}
+
+		$data['select_cylinders'] = form_dropdown('car_cyl_id', $cylinder_options, $data['car_cyl_id'], 'class="form-control"');
+
+
+		// body dropdown
+		$body_options['" disabled selected style="display: none;'] = 'Body type';
+		$body_options['0'] = 'All body types';
+
+		foreach($data['car_bodies'] as $body) {
+			$body_options[$body->car_body_id] = $body->body_name;
+		}
+
+		$data['select_bodies'] = form_dropdown('car_body_id', $body_options, $data['car_body_id'], 'class="form-control"');
+
+
+		// transmission dropdown
+		$option_transmission = array(
+			'" disabled selected style="display: none;' => 'Transmission',
+			'0'         => 'All transmissions',
+			'automatic' => 'Automatic',
+			'manual'    => 'Manual',
+			);
+
+		$data['select_transmission'] = form_dropdown('transmission', $option_transmission, $data['transmission'], 'class="form-control"');
 		
 		
 		// logged user data

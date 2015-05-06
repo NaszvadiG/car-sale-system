@@ -2,8 +2,8 @@
 		<div class="row">
 		
 		<ol class="breadcrumb">
-			<li><a href="#">Home</a></li>
-			<li><a href="#">Back to results</a></li>
+			<li><a href="<?php echo base_url('/'); ?>">Home</a></li>
+			<li><a href="<?php echo base_url('browse'); ?>">Browse cars</a></li>
 			<li><?php echo $car->year.' '.$car->make_name.' '.$car->model_name; ?></li>
 		</ol>
 		
@@ -66,7 +66,7 @@
 			<!-- car details -->
 			<div class="col-sm-9">
 				<div class="section-header">
-					<h4><?php echo $car->year.' '.$car->make_name.' '.$car->model_name; ?></h4>
+					<h4>(<?php echo $car->condition; ?>) <?php echo $car->year.' '.$car->make_name.' '.$car->model_name; ?></h4>
 				</div>
 				
 				<div class="row">
@@ -75,7 +75,7 @@
 							<div class="slide-container">
 							<?php 
 							foreach ($car_images as $image) {
-								echo '<img src="'.base_url('assets/uploads/'.$image->file).'" alt="">';
+								echo '<img src="'.base_url('assets/uploads/'.$image->file).'" alt="'.$image->file.'">';
 							}
 							?>
 							</div>
@@ -105,6 +105,10 @@
 				<div class="panel panel-default car-information">
 					<div class="panel-heading">Extra information</div>
 					<div class="panel-body">
+						<ul>
+							<li>Colour: <?php echo $car->colour; ?></li>
+						</ul>
+
 						<?php 
 						if (!empty($car->description)) {
 							echo $car->description; 
