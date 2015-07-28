@@ -2,9 +2,9 @@
 
 Note: This was merely a quick assessment task for my course :).
 
-For a demo, visit http://jeffnielsen.net/projects/5x5/index.php
+For a demo, visit http://jeffnielsen.net/projects/car_sale/index.php
 
-The following is a car sale system built using Codeigniter. It allows visitors to browse and place orders or enquires for cars. The site also features a little admin panel for adding cars and going through orders and enquiries.
+The following is a car sale system built using Codeigniter. It allows visitors to browse, place orders or enquire for car bookings. The site also features a little admin panel for adding cars and going through orders and enquiries.
 
 Tools used:
 - Codeigniter 2
