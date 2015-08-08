@@ -1,4 +1,4 @@
-$(document).ready(function() {
+$(window).ready(function() {
 	/*
 	 * car model + make selection
 	 */
@@ -14,12 +14,12 @@ $(document).ready(function() {
 		var car_make = $(this).val();
 		
 		get_model(site_url, car_make);
+
+		console.log(car_make + ' id was selected.');
 	});
 	
 	
-	/*
-	 * Carousel
-	 */
+	//// carousel ////
 	$('.car-slideshow .slide-container').cycle({
 		fx: 'scrollHorz',
 		timeout: 0,
@@ -30,9 +30,7 @@ $(document).ready(function() {
 	});
 	
 	
-	/*
-	 * validation
-	 */
+	//// validation ////
 	$('#login-form button').on('click', function() {
 		$('#login-form').validate({
 			submitHandler: function(form) {
@@ -150,20 +148,27 @@ $(document).ready(function() {
 });
 
 
-/*
- * function get_model
+/**
+ * [get_model description]
+ * @param  {[type]} site_url [description]
+ * @param  {[type]} car_make [description]
+ * @return {[type]}          [description]
  */
 function get_model(site_url, car_make) {
-	var selected_model = $('input[name="selected_model"').val();
+	var selected_model  = $('input[name="selected_model"]').val(),
+		controller_path = 'browse/get_models/';
 
 	$.ajax({
 		type: "GET",
-		url: site_url + 'admin/get_models/' + car_make,
+		url: site_url + controller_path + car_make,
 		dataType: "json",
 		error: function(response) {
 			console.log('Could not retreive data from url: ' + site_url);
+			console.log('Possible reason: path or file does not exit.');
 		},
 		success: function(result) {
+			console.log('Success!');
+
 			var select_model = $('#car_model'),
 				row = result;
 				
@@ -173,12 +178,13 @@ function get_model(site_url, car_make) {
 			
 			for (i in row) {
 				var model_id   = row[i].car_model_id,
-					model_name = row[i].model_name;
+					model_name = row[i].model_name,
+					count_cars = row[i].count;
 				
 				if (selected_model == model_id) {
-					select_model.append('<option value="' + model_id + '" selected="selected">' + model_name + '</option>');
+					select_model.append('<option value="' + model_id + '" selected="selected">' + model_name + ' (' + count_cars + ')</option>');
 				} else {
-					select_model.append('<option value="' + model_id + '">' + model_name + '</option>');
+					select_model.append('<option value="' + model_id + '">' + model_name + ' (' + count_cars + ')</option>');
 				}
 			}
 		}

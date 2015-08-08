@@ -10,7 +10,7 @@
 							<option value="0" disabled selected style="display: none;">Select Make</option>
 						<?php 
 						foreach ($car_makes as $make) {
-							echo '<option value="'.$make->car_make_id.'">'.$make->make_name.'</option>';
+							echo '<option value="'.$make->car_make_id.'">'.$make->make_name.' ('.$make->count.')</option>';
 						}
 						?>
 						</select>

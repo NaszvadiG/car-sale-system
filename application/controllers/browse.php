@@ -97,7 +97,7 @@ class Browse extends CI_Controller
 		$make_options['0'] = 'All makes';
 
 		foreach($data['car_makes'] as $make) {
-			$make_options[$make->car_make_id] = $make->make_name;
+			$make_options[$make->car_make_id] = $make->make_name.' ('.$make->count.')';
 		}
 
 		$data['select_make'] = form_dropdown('car_make_id', $make_options, $data['car_make_id'], 'class="form-control" id="car_make"');
@@ -162,5 +162,18 @@ class Browse extends CI_Controller
 		$this->load->view('header', $data);
 		$this->load->view('car');
 		$this->load->view('footer');
+	}
+
+
+	/*
+	 * Get models
+	 */
+	public function get_models($make_id = 0) 
+	{
+		$models = (array)$this->car_model->car_models($make_id);
+			
+		$this->output
+			->set_content_type('application/json')
+			->set_output(json_encode($models));
 	}
 }

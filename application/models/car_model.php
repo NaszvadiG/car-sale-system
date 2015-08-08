@@ -12,7 +12,10 @@ class Car_model extends CI_Model {
 	}
 	
 	public function car_makes($where = array(), $form_data = false) {
-		$this->db->order_by('make_name', 'asc');
+		$this->db->select('car_make.car_make_id, car_make.make_name, count(cars.car_id) AS count');
+		$this->db->join('cars', 'cars.car_make_id = car_make.car_make_id', 'left');
+		$this->db->order_by('car_make.make_name', 'asc');
+		$this->db->group_by('car_make.make_name');
 		
 		$query = $this->db->get('car_make');
 		
@@ -32,11 +35,15 @@ class Car_model extends CI_Model {
 	}
 	
 	public function car_models($car_make = 0) {
+		$this->db->select('car_model.car_model_id, car_model.model_name, count(cars.car_id) AS count');
+		$this->db->join('cars', 'cars.car_model_id = car_model.car_model_id', 'left');
+		$this->db->group_by('car_model.model_name');
+
 		if ($car_make > 0) {
-			$this->db->where('car_make_id', $car_make); 
+			$this->db->where('car_model.car_make_id', $car_make); 
 		}
 		
-		$this->db->order_by('model_name', 'asc');
+		$this->db->order_by('car_model.model_name', 'asc');
 		
 		$query = $this->db->get('car_model');
 		
