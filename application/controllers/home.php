@@ -38,18 +38,15 @@ class Home extends CI_Controller
 		{
 			// Data
 			$data['title'] = 'Log In | ABC Car Fleet';
-			
-			// logged user data
 			$data['logged'] = $this->user_model->logged();
 			
-			if($_POST) {
+			if(isset($_POST) && $_POST) {
 				$email = $this->input->post('email');
 				$pass  = $this->input->post('password');
-				$pass2 = $this->input->post('cofirm_password');
-				
+
 				// Check user credentials against database,
 				// check if form pass matches db pass
-				$credentials = $this->user_model->users(array('email' => $email));
+				$credentials = $this->user_model->users(['email' => $email]);
 				
 				// Store id in session
 				if (password_verify($pass, $credentials->password)) {

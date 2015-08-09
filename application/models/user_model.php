@@ -19,7 +19,7 @@ class User_model extends CI_Model
 	 */
 	public function users($where = array()) 
 	{
-		$this->db->join('user_profile', 'user_profile.user_id = users.user_id');
+		$this->db->join('user_profile', 'user_profile.user_id = users.user_id', 'left');
 		$this->db->join('user_roles', 'user_roles.role_id = users.role_id');
 		
 		if (count($where) > 0) {
