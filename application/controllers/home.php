@@ -16,10 +16,9 @@ class Home extends CI_Controller
 	public function index()
 	{
 		// Data
-		$data['title'] = 'ABC Car Fleet';
-		
+		$data['title']     = 'ABC Car Fleet';
 		$data['car_makes'] = $this->car_model->car_makes();
-		$data['cars'] = $this->car_model->cars();
+		$data['cars']      = $this->car_model->cars();
 		
 		// logged user data
 		$data['logged'] = $this->user_model->logged();
@@ -105,8 +104,6 @@ class Home extends CI_Controller
 			$password   = password_hash($this->input->post('password'), PASSWORD_BCRYPT);
 			$role_id    = 3; 
 			$created_at = date('Y-m-d H:i:s');
-
-
 			$form_data = array(
 				'email'        => $email,
 				'password'     => $password,
