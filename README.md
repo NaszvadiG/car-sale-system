@@ -1,5 +1,10 @@
 # Car-sale-system
 
+Login
+Email: demo@user.com
+Password: demo123
+
+
 Note: This was merely a quick assessment task for my course :).
 
 For a demo, visit http://jeffnielsen.net/projects/car_sale/index.php
